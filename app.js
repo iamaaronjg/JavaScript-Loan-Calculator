@@ -1,8 +1,16 @@
 // Listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function(e) {
+    // Hide results - ensures defaults remain hidden
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+
+    setTimeout(calculateResults, 2000); // Call calculateResuilts after 2 seconds
+
+    e.preventDefault()
+});
 
 // Calculate results function
-function calculateResults(e) {
+function calculateResults() {
     console.log('Calculating...');
 
     // UI variables
@@ -25,16 +33,25 @@ function calculateResults(e) {
         monthlyPayment.value = monthly.toFixed(2);
         totalPayment.value = (monthly * calculatedPayments).toFixed(2);
         totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+
+        // Show results
+        document.getElementById('results').style.display = 'block';
+
+        // Hide loader
+        document.getElementById('loading').style.display = 'none';
     } else {
         showError('Please check your numbers');
     }
-
-    // Prevent submit default behaviour (no redirect)
-    e.preventDefault();
 }
 
 // Show error when user submits invalid inputs
 function showError(error) {
+    // Hide results
+    document.getElementById('results').style.display = 'none';
+
+    // Hide loader
+    document.getElementById('loading').style.display = 'none';
+
     // Creates div to display error
     const errorDiv = document.createElement('div');
 
